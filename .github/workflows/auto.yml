@@ -30,7 +30,7 @@ jobs:
       run: |
         curl -o apps.json https://apps.nextcloud.com/api/v1/apps.json
 
-    - name: Replace github.com with gitee.com in the JSON file
+    - name: Replace github.com with github mirror in the JSON file
       run: |
         cat apps.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > apps_CN.json
 
