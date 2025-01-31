@@ -1,0 +1,43 @@
+# .github/workflows/download_and_replace.yml
+
+name: Download and Replace
+
+# 控制触发此工作流的事件
+on:
+  # 每当有推送发生时触发工作流
+  push:
+    branches:
+      - main # 或者你的默认分支名称
+  # 允许手动触发此工作流
+  workflow_dispatch:
+
+jobs:
+  download-and-replace:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Download apps.json from Nextcloud API
+      run: |
+        curl -o apps.json https://apps.nextcloud.com/api/v1/apps.json
+
+    - name: Replace github.com with gitee.com in the JSON file
+      run: |
+        cat apps.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > apps_CN.json
+
+    - name: Commit changes and push to repository
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add apps.json apps_CN.json
+        git commit -m "Update apps.json and create apps_CN.json" || echo "No changes to commit"
+        git push origin HEAD
