@@ -7,7 +7,7 @@ on:
   # 每当有推送发生时触发工作流
   push:
     branches:
-      - main # 或者你的默认分支名称
+      - main
   # 允许手动触发此工作流
   workflow_dispatch:
   schedule:
@@ -28,11 +28,16 @@ jobs:
 
     - name: Download apps.json from Nextcloud API
       run: |
-        curl -o apps.json https://apps.nextcloud.com/api/v1/apps.json
+        curl -o apps_ori.json https://apps.nextcloud.com/api/v1/apps.json
+        curl -o discover_ori.json https://apps.nextcloud.com/api/v1/discover.json
+        curl -o appapi_apps_ori.json https://apps.nextcloud.com/api/v1/appapi_apps.json
+        curl -o categories.json https://apps.nextcloud.com/api/v1/categories.json
 
     - name: Replace github.com with github mirror in the JSON file
       run: |
-        cat apps.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > apps_CN.json
+        cat apps_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > apps.json
+        cat discover_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > discover.json
+        cat appapi_apps_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > appapi_apps_ori.json
 
     - name: Commit changes and push to repository
       env:
@@ -41,5 +46,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add apps.json apps_CN.json
-        git commit -m "Update apps.json and create apps_CN.json" || echo "No changes to commit"
+        git commit -m "Update apps.json and Update apps_CN.json" || echo "No changes to commit"
         git push origin HEAD
