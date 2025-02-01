@@ -37,7 +37,7 @@ jobs:
       run: |
         cat apps_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > apps.json
         cat discover_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > discover.json
-        cat appapi_apps_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > appapi_apps_ori.json
+        cat appapi_apps_ori.json | sed 's|github\.com|cdn.moran233.xyz/https://github.com|g' > appapi_apps.json
 
     - name: Commit changes and push to repository
       env:
@@ -45,6 +45,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add apps.json apps_CN.json
+        git add apps.json discover.json categories.json appapi_apps.json
         git commit -m "Update apps.json and Update apps_CN.json" || echo "No changes to commit"
         git push origin HEAD
