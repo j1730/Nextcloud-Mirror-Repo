@@ -34,7 +34,7 @@
 
 ## 许可证
 
-本项目遵循 MIT 许可证，详情参见 [LICENSE](LICENSE) 文件。
+本项目遵循 WTFPL 许可证，详情参见 [LICENSE](LICENSE) 文件。
 
 ---
 
