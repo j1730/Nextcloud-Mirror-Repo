@@ -16,6 +16,10 @@
      ```php
      'appstoreurl' => 'https://gh.llkk.cc/https://github.com/alanwang233233/Nextcloud-Mirror-Repo/raw/refs/heads/main/',
      ```
+     或者：
+     ```php
+     'appstoreurl' => 'https://alanwang233233.github.io/Nextcloud-Mirror-Repo/',
+     ```
    - 确保添加的代码正确。
 
 2. **保存更改并重启服务器**（如果需要）:
