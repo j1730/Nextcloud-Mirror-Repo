@@ -1,4 +1,4 @@
-# .github/workflows/download_and_replace.yml
+# .github/workflows/Sync.yml
 
 name: Download and Replace
 
@@ -11,7 +11,7 @@ on:
   # 允许手动触发此工作流
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *' # 每天凌晨 2 点触发
+    - cron: '0 2 * * *' # 每天 UTC 2 点触发（即北京时间 10 点）
 
 jobs:
   download-and-replace:
@@ -28,23 +28,23 @@ jobs:
 
     - name: Download apps.json from Nextcloud API
       run: |
-        curl -L -o apps_ori.json https://apps.nextcloud.com/api/v1/apps.json
-        curl -L -o discover_ori.json https://apps.nextcloud.com/api/v1/discover.json
-        curl -L -o appapi_apps_ori.json https://apps.nextcloud.com/api/v1/appapi_apps.json
-        curl -L -o categories.json https://apps.nextcloud.com/api/v1/categories.json
+        curl -L -o apps_ori.json https://apps.nextcloud.com/api/v1/apps.json \
+          -o discover_ori.json https://apps.nextcloud.com/api/v1/discover.json \
+          -o appapi_apps_ori.json https://apps.nextcloud.com/api/v1/appapi_apps.json \
+          -o categories.json https://apps.nextcloud.com/api/v1/categories.json
 
     - name: Replace github.com with github mirror in the JSON file
       run: |
-        cat apps_ori.json | sed 's|github\.com|gh.llkk.cc/https://github.com|g' > apps.json
-        cat discover_ori.json | sed 's|github\.com|gh.llkk.cc/https://github.com|g' > discover.json
-        cat appapi_apps_ori.json | sed 's|github\.com|gh.llkk.cc/https://github.com|g' > appapi_apps.json
+        sed 's|https://github\.com|https://gh.llkk.cc/https://github.com|g' apps_ori.json > apps.json
+        sed 's|https://github\.com|https://gh.llkk.cc/https://github.com|g' discover_ori.json > discover.json
+        sed 's|https://github\.com|https://gh.llkk.cc/https://github.com|g' appapi_apps_ori.json > appapi_apps.json
 
     - name: Commit changes and push to repository
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git config --local user.email "wangzihao2010@outlook.com"
-        git config --local user.name "Error404"
+        git config --local user.email "j6@outlook.my"
+        git config --local user.name "j6"
         git add apps.json discover.json categories.json appapi_apps.json
         git commit -m "镜像原每日更新" || echo "No changes to commit"
         git push origin HEAD
