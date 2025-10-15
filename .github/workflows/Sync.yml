@@ -36,7 +36,7 @@ jobs:
     - name: Replace github.com with github mirror in the JSON file
       run: |
         PROXY_URL="https://gh.llkk.cc"
-        PATTERN="s#https://\(\([a-zA-Z0-9-]\{1,\}\.\)\{0,\}github\.com\)#$PROXY_URL/https://\1#g”
+        PATTERN="s#https://\(\([a-zA-Z0-9-]\{1,\}\.\)\{0,\}github\.com\)#$PROXY_URL/https://\1#g"
         sed "$PATTERN" apps_ori.json > apps.json
         sed "$PATTERN" discover_ori.json > discover.json
         sed "$PATTERN" appapi_apps_ori.json > appapi_apps.json
