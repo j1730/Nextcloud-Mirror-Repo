@@ -1,6 +1,6 @@
 # .github/workflows/Sync.yml
 
-name: Download and Replace
+name: Sync
 
 # 控制触发此工作流的事件
 on:
@@ -36,10 +36,10 @@ jobs:
     - name: Replace github.com with github mirror in the JSON file
       run: |
         PROXY_URL="https://gh.llkk.cc"
-        PATTERN="s~https://(github\.com|.*\.github\.com|raw\.githubusercontent\.com)~$PROXY_URL/https://\1~g"
-        sed -E "$PATTERN" apps_ori.json > apps.json
-        sed -E "$PATTERN" discover_ori.json > discover.json
-        sed -E "$PATTERN" appapi_apps_ori.json > appapi_apps.json
+        PATTERN="s#https://\(\([a-zA-Z0-9-]\{1,\}\.\)\{0,\}github\.com\)#$PROXY_URL/https://\1#g”
+        sed "$PATTERN" apps_ori.json > apps.json
+        sed "$PATTERN" discover_ori.json > discover.json
+        sed "$PATTERN" appapi_apps_ori.json > appapi_apps.json
 
     - name: Commit changes and push to repository
       env:
